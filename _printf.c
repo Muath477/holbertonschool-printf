@@ -1,4 +1,31 @@
 #include "main.h"
+/**
+* print_int - prints a number of digit
+*
+* @n: number to print
+*
+* Return: number of digits written
+*/
+int print_int(long n)
+{
+	int count = 0;
+	char c;
+	char sign = '-';
+	if (n < 0)
+	{
+		count += write(1, &sign, 1);
+		n = -n;
+	}
+	if (n > 9)
+	{
+		count += print_int(n / 10);
+	}
+	n = n % 10;
+	c = n + '0';
+	count += write(1, &c, 1);
+	return (count);
+}
+
 
 /**
  * print_char - prints a single character
@@ -72,7 +99,9 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			if (format[i] == 'c')
+			if (format[i] == 'd' || format[i] == 'i')
+			    count+= print_int(va_arg(args, int));
+			else if (format[i] == 'c')
 				count += print_char(args);
 			else if (format[i] == 's')
 				count += print_string(args);
