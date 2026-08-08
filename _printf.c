@@ -78,14 +78,15 @@ int _printf(const char *format, ...)
 				count += print_string(args);
 			else if (format[i] == '%')
 				count += print_percent(args);
+			else if (format[i] == '\0')
+			{
+				break;
+			}
 			else
 			{
 				/* unknown specifier, just print it as-is */
 				count += write(1, "%", 1);
-				if (format[i] != '\0')
-					count += write(1, &format[i], 1);
-				else
-					break;
+				count += write(1, &format[i], 1);
 			}
 		}
 		else
