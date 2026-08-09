@@ -76,6 +76,73 @@ int print_percent(va_list args)
 }
 
 /**
+ * print_base - prints an unsigned int converted to a given base
+ * @n: number to print
+ * @base: base to convert to
+ * @digits: characters to use for each digit value
+ *
+ * Return: number of characters written
+ */
+int print_base(unsigned int n, unsigned int base, char *digits)
+{
+	int count;
+	char c;
+
+	count = 0;
+
+	if (n >= base)
+		count += print_base(n / base, base, digits);
+	c = digits[n % base];
+	count += write(1, &c, 1);
+
+	return (count);
+}
+
+/**
+ * print_unsigned - prints an unsigned int in decimal
+ * @args: va_list holding the unsigned int to print
+ *
+ * Return: number of characters written
+ */
+int print_unsigned(va_list args)
+{
+	return (print_base(va_arg(args, unsigned int), 10, "0123456789"));
+}
+
+/**
+ * print_octal - prints an unsigned int in octal
+ * @args: va_list holding the unsigned int to print
+ *
+ * Return: number of characters written
+ */
+int print_octal(va_list args)
+{
+	return (print_base(va_arg(args, unsigned int), 8, "01234567"));
+}
+
+/**
+ * print_hex - prints an unsigned int in lowercase hexadecimal
+ * @args: va_list holding the unsigned int to print
+ *
+ * Return: number of characters written
+ */
+int print_hex(va_list args)
+{
+	return (print_base(va_arg(args, unsigned int), 16, "0123456789abcdef"));
+}
+
+/**
+ * print_hex_upper - prints an unsigned int in uppercase hexadecimal
+ * @args: va_list holding the unsigned int to print
+ *
+ * Return: number of characters written
+ */
+int print_hex_upper(va_list args)
+{
+	return (print_base(va_arg(args, unsigned int), 16, "0123456789ABCDEF"));
+}
+
+/**
  * print_binary - prints the binary representation of an unsigned int
  * @args: va_list holding the unsigned int to print
  *
@@ -147,6 +214,14 @@ int _printf(const char *format, ...)
 				count += print_percent(args);
 			else if (format[i] == 'b')
 				count += print_binary(args);
+			else if (format[i] == 'u')
+				count += print_unsigned(args);
+			else if (format[i] == 'o')
+				count += print_octal(args);
+			else if (format[i] == 'x')
+				count += print_hex(args);
+			else if (format[i] == 'X')
+				count += print_hex_upper(args);
 			else if (format[i] == '\0')
 			{
 				va_end(args);
