@@ -76,6 +76,44 @@ int print_percent(va_list args)
 }
 
 /**
+ * print_binary - prints the binary representation of an unsigned int
+ * @args: va_list holding the unsigned int to print
+ *
+ * Return: number of characters written
+ */
+int print_binary(va_list args)
+{
+	unsigned int n;
+	unsigned int mask;
+	int count;
+	int started;
+
+	n = va_arg(args, unsigned int);
+	count = 0;
+	started = 0;
+	mask = 1U << 31;
+
+	while (mask > 0)
+	{
+		if (n & mask)
+		{
+			count += write(1, "1", 1);
+			started = 1;
+		}
+		else if (started)
+		{
+			count += write(1, "0", 1);
+		}
+		mask >>= 1;
+	}
+
+	if (!started)
+		count += write(1, "0", 1);
+
+	return (count);
+}
+
+/**
  * _printf - produces output according to a format, like printf
  * @format: string with the text and conversion specifiers to print
  *
@@ -107,9 +145,12 @@ int _printf(const char *format, ...)
 				count += print_string(args);
 			else if (format[i] == '%')
 				count += print_percent(args);
+			else if (format[i] == 'b')
+				count += print_binary(args);
 			else if (format[i] == '\0')
 			{
-				break;
+				va_end(args);
+				return (-1);
 			}
 			else
 			{

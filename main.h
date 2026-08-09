@@ -9,5 +9,6 @@ int print_char(va_list args);
 int print_string(va_list args);
 int print_percent(va_list args);
 int print_int(long n);
+int print_binary(va_list args);
 
 #endif
