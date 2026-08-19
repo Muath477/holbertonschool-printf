@@ -205,7 +205,7 @@ int _printf(const char *format, ...)
 		{
 			i++;
 			if (format[i] == 'd' || format[i] == 'i')
-			    count+= print_int(va_arg(args, int));
+				count += print_int(va_arg(args, int));
 			else if (format[i] == 'c')
 				count += print_char(args);
 			else if (format[i] == 's')
