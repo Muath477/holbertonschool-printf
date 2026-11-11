@@ -3,6 +3,8 @@
 A custom implementation of `printf` for the Holberton/ALX low-level
 programming curriculum.
 
+<p align="center"><img src="assets/printf-demo.gif" alt="_printf compiled with strict flags and matching printf output" width="100%"></p>
+
 ## Task 0 - `_printf`
 
 `_printf` writes formatted output to stdout, the same way the standard
